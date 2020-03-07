@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication1
+namespace YangWebCrawler.Interface
 {
-	class Program
+	interface IWebCrawler
 	{
-		static void Main(string[] args)
-		{
-		}
+		void Crawl();
+
+
 	}
 }

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{D3D6B46F-7242-47B6-BA4D-3BA0CDA86DB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YangWebCrawler", "YangWebCrawler\YangWebCrawler.csproj", "{55E69CDA-F748-4A48-9CE9-2F105E328882}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D3D6B46F-7242-47B6-BA4D-3BA0CDA86DB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3D6B46F-7242-47B6-BA4D-3BA0CDA86DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3D6B46F-7242-47B6-BA4D-3BA0CDA86DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3D6B46F-7242-47B6-BA4D-3BA0CDA86DB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E69CDA-F748-4A48-9CE9-2F105E328882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E69CDA-F748-4A48-9CE9-2F105E328882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E69CDA-F748-4A48-9CE9-2F105E328882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E69CDA-F748-4A48-9CE9-2F105E328882}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
