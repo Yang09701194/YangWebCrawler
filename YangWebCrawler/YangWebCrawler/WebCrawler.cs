@@ -17,7 +17,8 @@ namespace YangWebCrawler
 				var web = new HtmlWeb();
 				HtmlDocument doc = web.Load(Value.Url);
 				//HtmlNode node = doc.DocumentNode.SelectSingleNode("...");
-				HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='r-list-container action-bar-margin bbs-screen']");
+				HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='r-list-container action-bar-margin bbs-screen']/div[@class='r-ent']/div[@class='title']/a");
+				List<string> urls = nodes.Select(n => n.Attributes["href"].Value).ToList();
 
 				var v = nodes;
 			}
