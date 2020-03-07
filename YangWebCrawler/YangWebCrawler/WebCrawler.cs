@@ -12,10 +12,20 @@ namespace YangWebCrawler
 	{
 		public void Crawl()
 		{
-			var web = new HtmlWeb();
-			var doc = web.Load(Value.Url);
+			try
+			{
+				var web = new HtmlWeb();
+				HtmlDocument doc = web.Load(Value.Url);
+				//HtmlNode node = doc.DocumentNode.SelectSingleNode("...");
+				HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='r-list-container action-bar-margin bbs-screen']");
 
-
+				var v = nodes;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
 		}
 
 	}

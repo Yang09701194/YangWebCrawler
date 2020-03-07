@@ -10,6 +10,17 @@ namespace YangWebCrawler
 	{
 		static void Main(string[] args)
 		{
+			try
+			{
+				WebCrawler crawler = new WebCrawler();
+				crawler.Crawl();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				//throw;
+			}
+
 
 
 		}
