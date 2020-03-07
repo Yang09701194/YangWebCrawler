@@ -28,9 +28,18 @@ namespace YangWebCrawler.DataAccessLayer
 			HtmlDocument doc = web.Load(pageUrl);
 			//HtmlNode node = doc.DocumentNode.SelectSingleNode("...");
 
-			string s = doc.ToString();
+			bool is404 = doc.DocumentNode.InnerHtml.Contains("404 - Not Found.");
 
-			return true;
+			return is404;
 		}
+
+
+		public static void DownloadPage()
+		{
+
+		}
+
+
+		public const string PttUrlPrefix = "https://www.ptt.cc";
 	}
 }
