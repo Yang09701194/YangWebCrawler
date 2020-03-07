@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using YangWebCrawler.DataAccessLayer;
 using YangWebCrawler.Interface;
 
 namespace YangWebCrawler
@@ -14,13 +16,23 @@ namespace YangWebCrawler
 		{
 			try
 			{
-				var web = new HtmlWeb();
-				HtmlDocument doc = web.Load(Value.Url);
-				//HtmlNode node = doc.DocumentNode.SelectSingleNode("...");
-				HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//div[@class='r-list-container action-bar-margin bbs-screen']/div[@class='r-ent']/div[@class='title']/a");
-				List<string> urls = nodes.Select(n => n.Attributes["href"].Value).ToList();
 
-				var v = nodes;
+				string[] urls = System.IO.File.ReadAllText(@".\..\Value.txt").Split(new string[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+
+
+				foreach (string url in urls)
+				{
+					int page = 10;
+					while (true)
+					{
+						string fUrl = String.Format(url, page);
+						bool b = WebHelper.Is404(fUrl);
+						//List<string> listUrls = WebHelper.GetListUrls(fUrl)
+						page += 1;
+					}
+
+				}
+
 			}
 			catch (Exception e)
 			{
@@ -28,6 +40,9 @@ namespace YangWebCrawler
 				throw;
 			}
 		}
+
+
+
 
 	}
 }
