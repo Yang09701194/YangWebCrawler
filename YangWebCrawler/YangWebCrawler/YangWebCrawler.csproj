@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessLayer\CommonHelper.cs" />
     <Compile Include="DataAccessLayer\NetHelper.cs" />
     <Compile Include="DataAccessLayer\WebHelper.cs" />
     <Compile Include="Interface\IWebCrawler.cs" />

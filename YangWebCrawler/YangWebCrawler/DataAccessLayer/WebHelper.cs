@@ -50,27 +50,30 @@ namespace YangWebCrawler.DataAccessLayer
 				#region Css
 				HtmlNodeCollection nodesCss = doc.DocumentNode.SelectNodes("//link[@type='text/css']");
 				List<string> cssUrls = nodesCss.Select(n => n.Attributes["href"].Value).ToList();
+				for (int i = 0; i < nodesCss.Count; i++)
+				{
+					string cssUrl = nodesCss[i].Attributes["href"].Value;
+					nodesCss[i].Attributes["href"].Value = $"./{title}_files/{cssUrl.FileName()}";
+				}
+
 				#endregion
 
 				#region Js
 				HtmlNodeCollection nodesJsAll = 
 					doc.DocumentNode.SelectNodes("//script");
+				List<HtmlNode> nodesJs =
+					doc.DocumentNode.SelectNodes("//script").Where(n => n.Attributes["src"] != null).ToList();
+
 				HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
 				HtmlNode newGaChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
 				body.InsertBefore(newGaChild, nodesJsAll[0]);
-
-				List<HtmlNode> nodesJs =
-					doc.DocumentNode.SelectNodes("//script").Where(n => n.Attributes["src"] != null).ToList();
+				
 				List<string> jsUrls = nodesJs.Select(n => n.Attributes["src"]?.Value).Where(s => s != null).ToList();
 				for (int i = 0; i < nodesJs.Count; i++)
 				{
 					string jsUrl = nodesJs[i].Attributes["src"].Value;
-
-					string jsFileName = jsUrl.Substring(jsUrl.LastIndexOf("/") + 1);
-
-					nodesJs[i].Attributes["src"].Value = $"./{title}_files/{jsFileName}";
+					nodesJs[i].Attributes["src"].Value = $"./{title}_files/{jsUrl.FileName()}";
 				}
-
 
 				#endregion
 
@@ -79,10 +82,42 @@ namespace YangWebCrawler.DataAccessLayer
 				File.WriteAllText($"{DownloadFolder}{title}.html", doc.DocumentNode.InnerHtml);
 
 				string gaJsUrl = @"https://www.google-analytics.com/analytics.js";
+				List<string> downloadUrls = new List<string>();
+				downloadUrls.AddRange(cssUrls);
+				downloadUrls.AddRange(jsUrls);
+				downloadUrls.Add(gaJsUrl);
+				foreach (string dUrl in downloadUrls)
+				{
+					string downloadUrl = "";
+					if (dUrl.StartsWith("//"))
+					{
+						downloadUrl = dUrl.Replace("//", "");
+					}
+					else
+						downloadUrl = dUrl;
 
-				#endregion
+					string baseStr, route;
+					if (downloadUrl.Contains("//"))
+					{
+						int doubleSlash = downloadUrl.IndexOf("//");
+						int singleSlash = downloadUrl.IndexOf("/", doubleSlash + 2);
+						baseStr = downloadUrl.Substring(0, singleSlash + 1);
+						route = downloadUrl.Replace(baseStr, "");
+					}
+					else
+					{
+						baseStr = downloadUrl.Substring(0, downloadUrl.IndexOf("/") + 1);
+						route = downloadUrl.Replace(baseStr, "");
+						baseStr = "https://" + baseStr;
+					}
 
+					string content = NetHelper.Get(baseStr, route);
+					string filePath = $"{DownloadFolder}{title}_files\\{downloadUrl.FileName()}";
+					CommonHelper.RecursiveCreateFolder(Path.GetDirectoryName(filePath));
+					File.WriteAllText(filePath, content);
+				}
 				
+				#endregion
 
 				var v = nodesCss;
 
