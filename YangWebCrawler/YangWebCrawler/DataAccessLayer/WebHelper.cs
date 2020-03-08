@@ -34,9 +34,53 @@ namespace YangWebCrawler.DataAccessLayer
 		}
 
 
-		public static void DownloadPage()
+		public static void DownloadPage(string url)
 		{
+			try
+			{
+				var web = new HtmlWeb();
+				HtmlDocument doc = web.Load(url);
 
+				#region Title
+				string title = doc.DocumentNode.SelectSingleNode("//title").InnerText;
+
+				#endregion
+
+				#region Css
+				HtmlNodeCollection nodesCss = doc.DocumentNode.SelectNodes("//link[@type='text/css']");
+				List<string> cssUrls = nodesCss.Select(n => n.Attributes["href"].Value).ToList();
+				#endregion
+
+				#region Js
+				HtmlNodeCollection nodesJs = doc.DocumentNode.SelectNodes("//script");
+				List<string> jsUrls = nodesJs.Select(n => n.Attributes["src"]?.Value).Where(s => s != null).ToList();
+
+				HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
+				HtmlNode newChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
+				//if (firstJsNode != null)
+				body.InsertBefore(
+						newChild
+						, nodesJs[0]);
+
+
+				string gaJsUrl = @"https://www.google-analytics.com/analytics.js";
+				//doc.DocumentNode.InsertAfter(,)
+
+
+
+				#endregion
+
+				var v = nodesCss;
+
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+
+		
 		}
 
 

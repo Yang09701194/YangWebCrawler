@@ -10,8 +10,8 @@ namespace Test
 		[TestMethod]
 		public void TestMethod1()
 		{
-
-			WebHelper.DownloadPage();
+			string[] urls = System.IO.File.ReadAllText(@".\..\UnitTest.txt").Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+			WebHelper.DownloadPage(urls[0]);
 
 			Assert.AreEqual((object)1, (object)1);
 		}
