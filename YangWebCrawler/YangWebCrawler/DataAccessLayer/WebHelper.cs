@@ -85,5 +85,6 @@ namespace YangWebCrawler.DataAccessLayer
 
 
 		public const string PttUrlPrefix = "https://www.ptt.cc";
+		public const string DownloadFolder = @".\..\..\TestDownload";
 	}
 }
