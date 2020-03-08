@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,23 +53,36 @@ namespace YangWebCrawler.DataAccessLayer
 				#endregion
 
 				#region Js
-				HtmlNodeCollection nodesJs = doc.DocumentNode.SelectNodes("//script");
-				List<string> jsUrls = nodesJs.Select(n => n.Attributes["src"]?.Value).Where(s => s != null).ToList();
-
+				HtmlNodeCollection nodesJsAll = 
+					doc.DocumentNode.SelectNodes("//script");
 				HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
-				HtmlNode newChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
-				//if (firstJsNode != null)
-				body.InsertBefore(
-						newChild
-						, nodesJs[0]);
+				HtmlNode newGaChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
+				body.InsertBefore(newGaChild, nodesJsAll[0]);
 
+				List<HtmlNode> nodesJs =
+					doc.DocumentNode.SelectNodes("//script").Where(n => n.Attributes["src"] != null).ToList();
+				List<string> jsUrls = nodesJs.Select(n => n.Attributes["src"]?.Value).Where(s => s != null).ToList();
+				for (int i = 0; i < nodesJs.Count; i++)
+				{
+					string jsUrl = nodesJs[i].Attributes["src"].Value;
 
-				string gaJsUrl = @"https://www.google-analytics.com/analytics.js";
-				//doc.DocumentNode.InsertAfter(,)
+					string jsFileName = jsUrl.Substring(jsUrl.LastIndexOf("/") + 1);
 
+					nodesJs[i].Attributes["src"].Value = $"./{title}_files/{jsFileName}";
+				}
 
 
 				#endregion
+
+				#region Download
+
+				File.WriteAllText($"{DownloadFolder}{title}.html", doc.DocumentNode.InnerHtml);
+
+				string gaJsUrl = @"https://www.google-analytics.com/analytics.js";
+
+				#endregion
+
+				
 
 				var v = nodesCss;
 
@@ -85,6 +99,6 @@ namespace YangWebCrawler.DataAccessLayer
 
 
 		public const string PttUrlPrefix = "https://www.ptt.cc";
-		public const string DownloadFolder = @".\..\..\TestDownload";
+		public const string DownloadFolder = @".\..\..\TestDownload\";
 	}
 }

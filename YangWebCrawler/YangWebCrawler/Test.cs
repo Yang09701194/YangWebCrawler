@@ -1,14 +1,16 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using YangWebCrawler.DataAccessLayer;
 
-namespace Test
+namespace YangWebCrawler
 {
-	[TestClass]
-	public class UnitTest1
+	public static class Test
 	{
-		[TestMethod]
-		public void TestMethod1()
+
+		public static void TestMethod1()
 		{
 			try
 			{
@@ -20,8 +22,7 @@ namespace Test
 				Console.WriteLine(e);
 				throw;
 			}
-			
-			Assert.AreEqual((object)1, (object)1);
+
 		}
 	}
 }

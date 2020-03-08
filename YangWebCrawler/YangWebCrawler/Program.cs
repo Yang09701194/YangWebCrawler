@@ -12,8 +12,11 @@ namespace YangWebCrawler
 		{
 			try
 			{
-				WebCrawler crawler = new WebCrawler();
-				crawler.Crawl();
+				Test.TestMethod1();
+
+				//WebCrawler crawler = new WebCrawler();
+				//crawler.Crawl();
+
 			}
 			catch (Exception e)
 			{
