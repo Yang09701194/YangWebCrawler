@@ -15,6 +15,23 @@ namespace YangWebCrawler.DataAccessLayer
 			return url.Substring(url.LastIndexOf("/") + 1);
 		}
 
+		public static string NameValid(this string name)
+		{
+			return name.Replace(":", "")
+				.Replace("\\", "")
+				.Replace("/", "")
+				.Replace("*", "")
+				.Replace("?", "")
+				.Replace("\"", "")
+				.Replace("<", "")
+				.Replace(">", "")
+				.Replace("|", "")
+				;
+
+		}
+
+
+
 
 		/// <summary>
 		/// 若為新的多層資料夾路徑，建立每一層資料夾

@@ -31,11 +31,8 @@ namespace YangWebCrawler
 						string fUrl = String.Format(url, page);
 						if (WebHelper.Is404(fUrl))
 							break;
+						Console.WriteLine($"WebHelper.GetListUrls({fUrl});");
 						List<string> listUrls = WebHelper.GetListUrls(fUrl);
-						
-						//if(listUrls.Any())
-						//	firstUrls.Add(listUrls[0]);
-
 						allPendingDownloadUrls.AddRange(listUrls);
 						page += 1;
 					}
@@ -43,10 +40,25 @@ namespace YangWebCrawler
 
 				var v = allPendingDownloadUrls;
 
+				foreach (string url in allPendingDownloadUrls)
+				{
+					try
+					{
+						Console.WriteLine($"WebHelper.DownloadPage({url})");
+						WebHelper.DownloadPage(WebHelper.PttUrlPrefix + url);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e);
+						//throw;
+					}
+					
+				}
+
 				//test
 				//firstUrls.ForEach(u => Process.Start(WebHelper.PttUrlPrefix + u));
 
-
+				Console.Read(); 
 			}
 			catch (Exception e)
 			{

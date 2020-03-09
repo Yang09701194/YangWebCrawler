@@ -47,6 +47,13 @@ namespace YangWebCrawler.DataAccessLayer
 			return is404;
 		}
 
+		public static bool IsStr404(string str)
+		{
+			return str.Contains("404 - Not Found.");
+		}
+
+
+		public static int Counter = 0;
 
 		public static void DownloadPage(string url)
 		{
@@ -54,9 +61,14 @@ namespace YangWebCrawler.DataAccessLayer
 			{
 				var web = new HtmlWeb();
 				HtmlDocument doc = web.Load(url);
+				if (IsStr404(doc.DocumentNode.InnerHtml))
+					return;
+
+				Console.WriteLine("Title");
 
 				#region Title
-				string title = doc.DocumentNode.SelectSingleNode("//title").InnerText;
+				string title = $"{++Counter}_" + doc.DocumentNode.SelectSingleNode("//title").InnerText;
+				title = title.NameValid();
 				#endregion
 
 				#region Css
@@ -69,6 +81,8 @@ namespace YangWebCrawler.DataAccessLayer
 				}
 				#endregion
 
+				Console.WriteLine("Doc Modify Js");
+				
 				#region Doc Modify
 
 				HtmlNode topbar = doc.DocumentNode.SelectSingleNode("//div[@id='topbar-container']");
@@ -82,9 +96,18 @@ namespace YangWebCrawler.DataAccessLayer
 				List<HtmlNode> nodesJs =
 					doc.DocumentNode.SelectNodes("//script").Where(n => n.Attributes["src"] != null).ToList();
 
-				HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
-				HtmlNode newGaChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
-				body.InsertBefore(newGaChild, nodesJsAll[0]);
+				try
+				{
+					HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
+					HtmlNode newGaChild = HtmlNode.CreateNode($"<script async=\"\" src=\"./{title}_files/analytics.js\">");
+					int c = nodesJsAll.Count;
+					body.InsertBefore(newGaChild, nodesJsAll[c-3]);
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e);
+					//throw;
+				}
 				
 				List<string> jsUrls = nodesJs.Select(n => n.Attributes["src"]?.Value).Where(s => s != null).ToList();
 				for (int i = 0; i < nodesJs.Count; i++)
@@ -94,6 +117,8 @@ namespace YangWebCrawler.DataAccessLayer
 				}
 				#endregion
 
+				Console.WriteLine("Downlaod");
+				
 				#region Download
 				File.WriteAllText($"{DownloadFolder}{title}.html", doc.DocumentNode.InnerHtml);
 
@@ -130,6 +155,7 @@ namespace YangWebCrawler.DataAccessLayer
 					string content = NetHelper.Get(baseStr, route);
 					string filePath = $"{DownloadFolder}{title}_files\\{downloadUrl.FileName()}";
 					CommonHelper.RecursiveCreateFolder(Path.GetDirectoryName(filePath));
+					Console.WriteLine("download "  + filePath);
 					File.WriteAllText(filePath, content);
 				}
 				
