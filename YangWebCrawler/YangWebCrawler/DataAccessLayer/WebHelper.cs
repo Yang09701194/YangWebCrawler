@@ -12,6 +12,19 @@ namespace YangWebCrawler.DataAccessLayer
 	{
 
 
+		private static string testHtml = null;
+		public static string TestHtml
+		{
+			get
+			{
+				if (testHtml != null)
+					return testHtml;
+				testHtml = System.IO.File.ReadAllText(@".\..\TestHtml.txt");
+				return testHtml;
+			}
+		}
+
+
 		public static List<string> GetListUrls(string pageUrl)
 		{
 			var web = new HtmlWeb();
@@ -44,7 +57,6 @@ namespace YangWebCrawler.DataAccessLayer
 
 				#region Title
 				string title = doc.DocumentNode.SelectSingleNode("//title").InnerText;
-
 				#endregion
 
 				#region Css
@@ -55,6 +67,12 @@ namespace YangWebCrawler.DataAccessLayer
 					string cssUrl = nodesCss[i].Attributes["href"].Value;
 					nodesCss[i].Attributes["href"].Value = $"./{title}_files/{cssUrl.FileName()}";
 				}
+				#endregion
+
+				#region Doc Modify
+
+				HtmlNode topbar = doc.DocumentNode.SelectSingleNode("//div[@id='topbar-container']");
+				topbar.InnerHtml = TestHtml;
 
 				#endregion
 
@@ -74,11 +92,9 @@ namespace YangWebCrawler.DataAccessLayer
 					string jsUrl = nodesJs[i].Attributes["src"].Value;
 					nodesJs[i].Attributes["src"].Value = $"./{title}_files/{jsUrl.FileName()}";
 				}
-
 				#endregion
 
 				#region Download
-
 				File.WriteAllText($"{DownloadFolder}{title}.html", doc.DocumentNode.InnerHtml);
 
 				string gaJsUrl = @"https://www.google-analytics.com/analytics.js";
@@ -118,9 +134,6 @@ namespace YangWebCrawler.DataAccessLayer
 				}
 				
 				#endregion
-
-				var v = nodesCss;
-
 
 			}
 			catch (Exception e)
