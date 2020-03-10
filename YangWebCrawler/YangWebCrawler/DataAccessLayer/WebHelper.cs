@@ -147,9 +147,17 @@ namespace YangWebCrawler.DataAccessLayer
 					}
 					else
 					{
-						baseStr = downloadUrl.Substring(0, downloadUrl.IndexOf("/") + 1);
-						route = downloadUrl.Replace(baseStr, "");
-						baseStr = "https://" + baseStr;
+						if (downloadUrl.StartsWith("/"))
+						{
+							baseStr = PttUrlPrefix + "/";
+							route = downloadUrl.Substring(1);
+						}
+						else
+						{
+							baseStr = downloadUrl.Substring(0, downloadUrl.IndexOf("/") + 1);
+							route = downloadUrl.Replace(baseStr, "");
+							baseStr = "https://" + baseStr;
+						}
 					}
 
 					string content = NetHelper.Get(baseStr, route);

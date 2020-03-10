@@ -14,9 +14,10 @@ namespace YangWebCrawler
 			{
 				//Test.TestMethod1();
 
-				WebCrawler crawler = new WebCrawler();
-				crawler.Crawl();
+				//WebCrawler crawler = new WebCrawler();
+				//crawler.Crawl();
 
+				LocalWorker.ModifyFileNameToNumber();
 			}
 			catch (Exception e)
 			{
