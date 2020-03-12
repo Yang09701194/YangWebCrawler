@@ -18,25 +18,26 @@ namespace YangWebCrawler
 
 			string sourceDir = @".\..\..\..\..\..\WP\Backup\DiaryNumber_Ver2";
 			List<string> files = Directory.GetFiles(sourceDir).ToList();
+			files = files.OrderBy(f =>
+				Convert.ToInt32(
+					Path.GetFileName(f).Split('_')[0]
+				)
+			).ToList();
 
-			string result = "";
+			List<string> result = new List<string>();
 			foreach (string file in files)
 			{
 				string content = File.ReadAllText(file);
-				int s = content.IndexOf("<title>") + 8;
+				int s = content.IndexOf("<title>") + 7;
 				int e = content.IndexOf("</title>");
 				string title = content.Substring(s,  e - s);
 				string fname = Path.GetFileName(file);
-				result += $"<h4><a href=\"https://www.name2name2.com/name2name2/Main/Diary/{fname}\">{title}</a></h4>";
-
+				result.Add($"<h4><a href=\"https://www.name2name2.com/name2name2/Main/Diary/{fname}\">{title}</a></h4>\r\n");
 			}
+			string r = String.Join("", result);
 
 
-
-
-			System.Windows.Forms.Clipboard.SetText(result);
-			 
-			 
+			//System.Windows.Forms.Clipboard.SetText(result);
 
 		}
 

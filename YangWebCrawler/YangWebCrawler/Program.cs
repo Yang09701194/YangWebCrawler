@@ -18,7 +18,7 @@ namespace YangWebCrawler
 				//crawler.Crawl();
 
 				//LocalWorker.ModifyFileNameToNumber();
-				LocalWorker.UrlList();();
+				LocalWorker.UrlList();
 			}
 			catch (Exception e)
 			{
