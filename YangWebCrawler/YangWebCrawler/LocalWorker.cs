@@ -18,7 +18,7 @@ namespace YangWebCrawler
 
 			string sourceDir = @".\..\..\..\..\..\WP\Backup\DiaryNumber_Ver2";
 			List<string> files = Directory.GetFiles(sourceDir).ToList();
-			files = files.OrderBy(f =>
+			files = files.OrderByDescending(f =>
 				Convert.ToInt32(
 					Path.GetFileName(f).Split('_')[0]
 				)
