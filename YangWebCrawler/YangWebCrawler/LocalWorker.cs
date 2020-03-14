@@ -32,7 +32,7 @@ namespace YangWebCrawler
 				int e = content.IndexOf("</title>");
 				string title = content.Substring(s,  e - s);
 				string fname = Path.GetFileName(file);
-				result.Add($"<h4><a href=\"https://www.name2name2.com/name2name2/Main/Diary/{fname}\">{title}</a></h4>\r\n");
+				result.Add($"<h4><a href=\"https://...../Diary/{fname}\">{title}</a></h4>\r\n");
 			}
 			string r = String.Join("", result);
 
