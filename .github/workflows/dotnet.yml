@@ -1,4 +1,4 @@
-name: .NET
+name: "PR Checks"
 
 on:
   push:
