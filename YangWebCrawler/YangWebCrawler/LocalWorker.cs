@@ -4,11 +4,46 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using YangWebCrawler.DataAccessLayer;
 
 namespace YangWebCrawler
 {
 	public static class LocalWorker
 	{
+
+		public static void GetCwbImgs()
+		{
+			string urlFormat = @"/V7/symbol/weather/gif/day/{0}.gif";
+
+
+			for (int i = 1; i <= 65; i++)
+			{
+				try
+				{
+					Console.WriteLine(i);
+					string urlPostfix = String.Format(urlFormat, i.ToString("00"));
+					FileStream fs =
+						File.Create(
+							$@"........\Images\{i.ToString("00")}.gif");
+
+					Stream content = (Stream) NetHelper.Get("https://www.cwb.gov.tw/", urlPostfix, ContentType.Stream);
+					content.Seek(0, SeekOrigin.Begin);
+					content.CopyTo(fs);
+					fs.Close();//也可以用using 不加Close()
+
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e);
+					//throw;
+				}
+
+
+			}
+
+		}
+
 
 		public static void UrlList()
 		{
