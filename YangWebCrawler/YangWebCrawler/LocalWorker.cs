@@ -14,7 +14,8 @@ namespace YangWebCrawler
 
 		public static void GetCwbImgs()
 		{
-			string urlFormat = @"/V7/symbol/weather/gif/day/{0}.gif";
+			//string urlFormat = @"/V7/symbol/weather/gif/day/{0}.gif";
+			string urlFormat = @"/V7/symbol/weather/gif/night/{0}.gif";
 
 
 			for (int i = 1; i <= 65; i++)
